@@ -27,13 +27,14 @@ def episode_info(episode_id=0, increment=0, sort="desc"):
 
 @service
 def sunkim_play(increment=0):
+    if state.get("input_boolean.sunkim_player") != "on":
+        state.set("input_boolean.sunkim_player", "on")
+        return
     episode_id = int(float(state.get("input_number.sunkim_episode_id")))
     episode = episode_info(episode_id, increment)
     if increment > 0 and episode_id == episode['id']:
-        # Happens when this is the last episode. Need to wrap over to first
         episode = episode_info(sort="asc")
     elif increment < 0 and episode_id == episode['id']:
-        # Happens when this is the first episode. Need to wrap over to last
         episode = episode_info(sort="desc")
     state.set("input_number.sunkim_episode_id", episode['id'])
     tts.google_translate_say(entity_id="media_player.bedroom_speaker", message=episode['num'], language="ko", cache=True)
