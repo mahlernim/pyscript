@@ -13,7 +13,7 @@ def episode_info(episode_id=0, increment=0, sort="desc"):
     for d in data:
         title = d['title']
         match = re.search(r'^(\d+)', title)
-        num = int(match.group(1)) if match else None
+        num = int(match.group(1)) if match else "번호없음"
         extracted_data.append({
             'id': d['id'],
             'title': title,
